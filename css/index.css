@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.contaienr_main {
+    /* flex-basis: 100%; */
+    padding-left: 10px;
+    flex: 1 1 40%;
+
+}
+
+.swiper-slide:hover {
+    transform: scale(1.1);
+}
+
+swiper-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 10px;
+    /* 원하는 만큼의 여백 설정 */
+}
+
+swiper-slide {
+    transition: transform 0.3s ease;
+    font-size: 18px;
+    background: white;
+    /* text-align: center; */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+swiper-slide img {
+    width: 50%;
+    height: 30%;
+    object-fit: cover;
+}
+
+.top-content {
+    width: 200px;
+    height: 267px;
+
+}
+
+.middle-content {
+    width: 200px;
+    height: 267px;
+}
+
+.bottom-content {
+    color: black;
+}
+
+img {
+    width: 30%;
+    height: 25%;
+    object-fit: cover;
+}
+
+.test {
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+    /* border-radius: 6px; */
+}
+
+.text-sub {
+    color: black;
+    font-size: 15px;
+}
+
+.log_img {
+    width: 300px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.calculate {
+    font-size: 60px;
+}
