@@ -2,7 +2,7 @@ const sub_title = document.querySelector('.text-sub');
 sub_title.innerHTML =`  ‘공짜시간’은 7시에 일어나 활동한 12주간의 기록입니다.<br>
 원래 없는 것과 같았던 오전 시간을 활용해 아침을 먹고, 움직였습니다.<br>
 사진 두 개 중 위에는 매일 챙겨 먹은 아침식사를, 아래에는 한 일을 기록했습니다.<br>
-사진을 클릭하며 하루 24시간에 추가된 공짜시간을 볼 수 있습니다.`;
+사진을 클릭하면 하루 24시간에 추가된 공짜시간을 볼 수 있습니다.`;
 
 const swiperEl = document.querySelector('swiper-container')
 
