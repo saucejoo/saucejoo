@@ -3,370 +3,114 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>공짜시간</title>
+    <title>양연주</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-element-bundle.min.js"></script>
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/main/index.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="contaienr_main">
-            <img class="log_img" src="./images/white_logo.png" alt="">
-            <div class="text-sub"></div>
+    <body onload="printClock()">
+        <div style="border:0px solid #dedede;
+        width:100%; height:60px; line-height:100px; color:#000000; font-size:15px; text-align:center;" id="clock">
+        <div class="clock">
+            <p class="clock-text">이 웹사이트는 지금도 업데이트 중</p>
         </div>
-        <div class="container">
-            <div class="calculate"><p class="contaienr_main ">24 + </p></div>
-            <span class="calculate" id="here"> 공짜시간</span>
-            <br>
+
+        </div>
+    </body>
+    <!-- 출처: https://bbaksae.tistory.com/23 [QRD:티스토리] -->
+
+
+
+    <h1>양연주</h1>
+    <!-- <h2>Yeonju Yang</h2> -->
+    <br>
+    <details>
+        <!-- <summary>●</summary> -->
+        <summary>
+            <img id="img_1" src="https://d2sqyv4lka8mpx.cloudfront.net/main/easy.png">
+        </summary>
+        <ul>
+        이름: 양연주<br>
+        전화번호: 010-2222-3856<br>
+        이메일: saucejooooo@gmail.com<br>
+        학력: 홍익대학교 조형대학 디자인컨버전스학부
+        </ul>
+    </details>  
+    <details>
+        <!-- <summary>●●</summary> -->
+        <summary>
+            <img id="img_2" src="https://d2sqyv4lka8mpx.cloudfront.net/main/normal.png">
+        </summary>
+        <ul>
+        본명 양연주 대신 양념이라고 더 많이 불리고 그걸 매우 좋아함. 2000년 2월 2일 출생
+        </ul>
+    </details> 
+    <details>
+        <!-- <summary>●●●</summary> -->
+        <summary>
+            <img id="img_3" src="https://d2sqyv4lka8mpx.cloudfront.net/main/hard.png">
+        </summary>
+        <ul>
+        양념이라는 별명은 중학교 1학년 때 놀리기 좋아하던 친구가 내 탁상용 이름표에 낙서를 해준 덕분에 생김, 몸무게 상시 변화<br>
+        ESFP와 ESTP 그 사이, 오른손을 주로 사용하지만 양치와 숟가락질은 왼손으로 하려고 하는 편, 나이는 24살인데 2000년 2월 2일 출생<br>
+        핸드폰 번호 중간자리가 2222임.(그래서 숫자 2를 좋아함) 물병자리이지만 물을 잘 안 마심.(과학적으로 상관 없음) 서울특별시 동대문구 약령시로 출신<br>
+        아빠, 엄마, 언니 그리고 고양이 오후와 24년 째 살고 있다. 옆에 약재를 파는 약령시장이 있어서 한약 냄새를 맡으며 의도치 않게 아주 건강하게 자란 편이라고 믿음<br>
+        대부분의 컴퓨터 ID는 ssm06061~로 시작하는데 초등학교 다닐 때 컴퓨터 수업에서 임의로 준 아이디를 15년째 사용 중. 2019년 홍익대학교 조형대학 디자인컨버전스학부에 입학<br>
+        넌센스퀴즈를 좋아해서 대학교에 입학해서 친구들 사귀는데 요긴하게 씀.(초등학교 때부터 넌센스 퀴즈를 달달 외우고 다닐 정도로 좋아했음) 취미는 사랑이고 사람 간의 관계에 대하여 관심이 많음<br>
+        가장 중요하게 생각하는 가치관은 타인에게 상처 주지 않고 할 말은 다 하는 것임. 방어를 위한 공격을 싫어함. 모든 좋아하는 일들을 열심히 하기 때문에(특히 인터렉션과 광고, 브랜딩 분야) 앞으로의 성장이 기대됨
+        </ul>
+    </details>
+    <!-- <hr width = "100%" color = "white" size = "15">
+    <hr width = "100%" color = "black" size = "2">
+    <hr width = "100%" color = "white" size = "15"> -->
+
+    <div class="link-container">
+        <div>
+            <!-- <img id="meettro-img" src="https://d2sqyv4lka8mpx.cloudfront.net/main/meettro.png"/> -->
+            <img id="meettro-gif" src="https://d2sqyv4lka8mpx.cloudfront.net/main/tt-shortstop.gif"/>
+            <div><p class="meettro-text">MEETTRO<br>Web Develope, Brand Manual,<br>Graphic Identity, Logo, Character,<br>Exhibition, 2023</p></div>
+        </div>
+        <div>
+            <img id="lockers-img" src="https://d2sqyv4lka8mpx.cloudfront.net/main/lockers.png"/>
+            <div><p class="lockers-text">LOCKERS<br>Brand Manual, Custom Typeface, Graphic Identity,<br>Logo, 2022</p></div>
+        </div>
+        <div>
+            <img id="freetime-img" src="https://d2sqyv4lka8mpx.cloudfront.net/main/freetime.png"/>
+            <div><p class="freetime-text">공짜시간(7시)<br>Web Develope, Logo, 2022</p></div>
+        </div>
+        <div>
+            <img id="dragpower-gif" src="https://d2sqyv4lka8mpx.cloudfront.net/main/dragpower.gif"/>
+            <div><p class="dragpower-text">DDP 서울디자인 2022 협력프로그램 - 끌력<br>Project Manage, Brand Manual,<br>Graphic Identity, Web Develope, 2022</p></div>
         </div>
     </div>
-    <br>
-    <br>
-    <swiper-container init="false">
-        <swiper-slide>
-            <div id="selCount1" data-value="7.00">
-                <div class="top-content"><img class="test" src="./images/1.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/2.png" alt=""></div>
-                <div class="bottom-content">20230314</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount2" data-value="7.00">
-                <div class="top-content"><img class="test" src="./images/3.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/4.png" alt=""></div>
-                <div class="bottom-content">20230315</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount3" data-value="7.00">
-                <div class="top-content"><img class="test" src="./images/5.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/6.png" alt=""></div>
-                <div class="bottom-content">20230316</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount4" data-value="6.49">
-                <div class="top-content"><img class="test" src="./images/7.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/8.png" alt=""></div>
-                <div class="bottom-content">20230317</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount5" data-value="6.23">
-                <div class="top-content"><img class="test" src="./images/9.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/10.png" alt=""></div>
-                <div class="bottom-content">20230321</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount6" data-value="7.00">
-                <div class="top-content"><img class="test" src="./images/11.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/12.png" alt=""></div>
-                <div class="bottom-content">20230322</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount7" data-value="7.00">
-                <div class="top-content"><img class="test" src="./images/13.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/14.png" alt=""></div>
-                <div class="bottom-content">20230323</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount8" data-value="7.17">
-                <div class="top-content"><img class="test" src="./images/15.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/16.png" alt=""></div>
-                <div class="bottom-content">20230324</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount9" data-value="7.00">
-                <div class="top-content"><img class="test" src="./images/17.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/18.png" alt=""></div>
-                <div class="bottom-content">20230328</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount10" data-value="6.39">
-                <div class="top-content"><img class="test" src="./images/19.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/20.png" alt=""></div>
-                <div class="bottom-content">20230329</div>
-            </div>
-        </swiper-slide>
-        <swiper-slide>
-            <div id="selCount11" data-value="6.27" >
-                <div class="top-content"><img class="test" src="./images/21.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/22.png" alt=""></div>
-                <div class="bottom-content">20230330</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount12" data-value="6.01" >
-                <div class="top-content"><img class="test" src="./images/23.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/24.png" alt=""></div>
-                <div class="bottom-content">20230402</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount13" data-value="6.20" >
-                <div class="top-content"><img class="test" src="./images/25.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/26.png" alt=""></div>
-                <div class="bottom-content">20230404</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount14"data-value="7.00"  >
-                <div class="top-content"><img class="test" src="./images/27.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/28.png" alt=""></div>
-                <div class="bottom-content">20230405</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount15" data-value="6.27"  >
-                <div class="top-content"><img class="test" src="./images/29.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/30.png" alt=""></div>
-                <div class="bottom-content">20230406</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount16" data-value="6.50" >
-                <div class="top-content"><img class="test" src="./images/31.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/32.png" alt=""></div>
-                <div class="bottom-content">20230407</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount17" data-value="7.00" >
-                <div class="top-content"><img class="test" src="./images/33.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/34.png" alt=""></div>
-                <div class="bottom-content">20230411</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount18"  data-value="6.36" >
-                <div class="top-content"><img class="test" src="./images/35.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/36.png" alt=""></div>
-                <div class="bottom-content">20230412</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount19" data-value="7.39" >
-                <div class="top-content"><img class="test" src="./images/37.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/38.png" alt=""></div>
-                <div class="bottom-content">20230413</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount20" data-value="7.27" >
-                <div class="top-content"><img class="test" src="./images/39.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/40.png" alt=""></div>
-                <div class="bottom-content">20230414</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount21" data-value="6.50" >
-                <div class="top-content"><img class="test" src="./images/41.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/42.png" alt=""></div>
-                <div class="bottom-content">20230418</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount22" data-value="7.07" >
-                <div class="top-content"><img class="test" src="./images/43.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/44.png" alt=""></div>
-                <div class="bottom-content">20230419</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount23" data-value="6.37" >
-                <div class="top-content"><img class="test" src="./images/45.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/46.png" alt=""></div>
-                <div class="bottom-content">20230420</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount24" data-value="7.18"  >
-                <div class="top-content"><img class="test" src="./images/47.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/48.png" alt=""></div>
-                <div class="bottom-content">20230421</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount25" data-value="7.00" >
-                <div class="top-content"><img class="test" src="./images/49.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/50.png" alt=""></div>
-                <div class="bottom-content">20230425</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount26" data-value="7.18" >
-                <div class="top-content"><img class="test" src="./images/51.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/52.png" alt=""></div>
-                <div class="bottom-content">20230426</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount27"data-value="7.56"  >
-                <div class="top-content"><img class="test" src="./images/53.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/54.png" alt=""></div>
-                <div class="bottom-content">20230427</div>
-            </div>
-        </swiper-slide>
-
-       <swiper-slide>
-            <div id="selCount28" data-value="7.09"  >
-                <div class="top-content"><img class="test" src="./images/55.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/56.png" alt=""></div>
-                <div class="bottom-content">20230428</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount29" data-value="7.09" >
-                <div class="top-content"><img class="test" src="./images/57.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/58.png" alt=""></div>
-                <div class="bottom-content">20230502</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount30" data-value="6.40" >
-                <div class="top-content"><img class="test" src="./images/59.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/60.png" alt=""></div>
-                <div class="bottom-content">20230503</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount31" data-value="7.00"  >
-                <div class="top-content"><img class="test" src="./images/61.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/62.png" alt=""></div>
-                <div class="bottom-content">20230504</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount32" data-value="7.00" >
-                <div class="top-content"><img class="test" src="./images/63.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/64.png" alt=""></div>
-                <div class="bottom-content">20230507</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount33" data-value="7.00" >
-                <div class="top-content"><img class="test" src="./images/65.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/66.png" alt=""></div>
-                <div class="bottom-content">20230509</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount34" data-value="6.51" >
-                <div class="top-content"><img class="test" src="./images/67.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/68.png" alt=""></div>
-                <div class="bottom-content">20230510</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount35" data-value="6.58" >
-                <div class="top-content"><img class="test" src="./images/69.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/70.png" alt=""></div>
-                <div class="bottom-content">20230511</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount36" data-value="7.01"  >
-                <div class="top-content"><img class="test" src="./images/71.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/72.png" alt=""></div>
-                <div class="bottom-content">20230512</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount37" data-value="5.30" >
-                <div class="top-content"><img class="test" src="./images/73.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/74.png" alt=""></div>
-                <div class="bottom-content">20230516</div>
-            </div>
-        </swiper-slide>
-
-       <swiper-slide>
-            <div id="selCount38" data-value="5.50" >
-                <div class="top-content"><img class="test" src="./images/75.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/76.png" alt=""></div>
-                <div class="bottom-content">20230517</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount39" data-value="6.42" >
-                <div class="top-content"><img class="test" src="./images/77.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/78.png" alt=""></div>
-                <div class="bottom-content">20230518</div>
-            </div>
-        </swiper-slide>
-
-       <swiper-slide>
-            <div id="selCount40" data-value="7.18" >
-                <div class="top-content"><img class="test" src="./images/79.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/80.png" alt=""></div>
-                <div class="bottom-content">20230519</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount41" data-value="6.56" >
-                <div class="top-content"><img class="test" src="./images/81.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/82.png" alt=""></div>
-                <div class="bottom-content">20230523</div>
-            </div>
-        </swiper-slide>
-
-       <swiper-slide>
-            <div id="selCount42" data-value="6.15" >
-                <div class="top-content"><img class="test" src="./images/83.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/84.png" alt=""></div>
-                <div class="bottom-content">20230524</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount43" data-value="7.00"  >
-                <div class="top-content"><img class="test" src="./images/85.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/86.png" alt=""></div>
-                <div class="bottom-content">20230525</div>
-            </div>
-        </swiper-slide>
-
-       <swiper-slide>
-            <div id="selCount44" data-value="7.44" >
-                <div class="top-content"><img class="test" src="./images/87.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/88.png" alt=""></div>
-                <div class="bottom-content">20230526</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount45" data-value="6.50" >
-                <div class="top-content"><img class="test" src="./images/89.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/90.png" alt=""></div>
-                <div class="bottom-content">20230529</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount46" data-value="7.09">
-                <div class="top-content"><img class="test" src="./images/91.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/92.png" alt=""></div>
-                <div class="bottom-content">20230531</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount47" data-value="6.15">
-                <div class="top-content"><img class="test" src="./images/93.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/94.png" alt=""></div>
-                <div class="bottom-content">20230601</div>
-            </div>
-        </swiper-slide>
-       <swiper-slide>
-            <div id="selCount48" data-value="6.07">
-                <div class="top-content"><img class="test" src="./images/95.png" alt=""></div>
-                <div class="middle-content"><img class="test" src="./images/96.png" alt=""></div>
-                <div class="bottom-content">20230602</div>
-            </div>
-        </swiper-slide>
-    </swiper-container>
-    <script src="./func/funcs.js"></script>
+    <div class="link-container">
+        <div>
+            <img id="izit-img" src="https://d2sqyv4lka8mpx.cloudfront.net/main/izit.png"/>
+            <div><p class="izit-text">현대자동차 산학 프로젝트 - IZIT<br>Product, UX, UI, 2022</p></div>
+        </div>
+        <div id="ros">
+            <img id="rock-gif" src="https://d2sqyv4lka8mpx.cloudfront.net/main/rock.gif"/>
+            <div><p class="rock-text">돌멩이 굴리기 대회<br>Brand Manual, Custom Typeface,<br>Graphic Identity, Logo, 2022</p></div>
+        </div>
+        <div >
+            <img id="fullofthis-img" src="https://d2sqyv4lka8mpx.cloudfront.net/main/fullofthis.png"/>
+            <div><p class="fullofthis-text">온통 이 생각<br>Project Manage,<br>Web Develope, 2022</p></div>
+        </div>
+        <div>
+            <img id="weindow-img" src="https://d2sqyv4lka8mpx.cloudfront.net/main/weindow.png"/>
+            <div><p class="weindow-text">WEINDOW<br>Web Develope, 2022</p></div>
+        </div>
+    </div>
+    <!-- <div class="link-container">
+        <div>5</div>
+        <div>6</div>
+        <div>7</div>
+        <div>8</div>
+    </div> -->
+    <script defer src="func/main.js"></script>
+    <script defer src="func/event.js"></script>
 </body>
 
 </html>

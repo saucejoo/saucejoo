@@ -4,13 +4,18 @@
     box-sizing: border-box;
 }
 
-html {
+/* html {
     font-family: 'Noto Sans KR', sans-serif;
-}
+} */
 
 body {
-    font-family: 'Noto Sans KR', sans-serif;
-    
+    /* font-family: 'Noto Sans KR', sans-serif; */
+    color: white;
+    background-color: rgb(22, 22, 22);
+}
+
+.bottom-content {
+    color: white;
 }
 
 .container {
@@ -20,10 +25,10 @@ body {
 
 .contaienr_main {
     /* flex-basis: 100%; */
-    padding-left: 10px;
+    padding-left: 30px;
     flex: 1 1 40%;
-
 }
+
 
 .swiper-slide:hover {
     transform: scale(1.1);
@@ -42,7 +47,7 @@ swiper-container {
 swiper-slide {
     transition: transform 0.3s ease;
     font-size: 15px;
-    background: white;
+    background: rgb(22, 22, 22);
     /* text-align: center; */
     /* display: flex; */
     /* justify-content: center; */
@@ -67,13 +72,14 @@ swiper-slide img {
 }
 
 .bottom-content {
-    color: black;
+    color: rgb(255, 255, 255);
 }
 
 img {
     width: 30%;
     height: 25%;
     object-fit: cover;
+    cursor: pointer;
 }
 .test {
     width: 50%;
@@ -82,16 +88,22 @@ img {
     /* border-radius: 6px; */
 }
 .text-sub {
-    color: black;
-    font-size: 15px;
-    line-height: 24px;
+    color: rgb(255, 255, 255);
+    font-size: 13px;
+    line-height: 25px;
+    box-sizing: border-box;
 }
 .log_img {
-    width: 300px;
-    height: 100px;
+    width: 200px;
+    height: 60px;
     object-fit: cover;
+    margin-top: 50px;
+    margin-bottom: 10px;
 }
 
 .calculate {
+    text-align: center;
     font-size: 60px;
+    margin-top: 33px;
+    margin-right: 30px;
 }

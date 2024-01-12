@@ -1,0 +1,66 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 100%;
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 16px;
+    font-size: 20px;
+    line-height: 1.7;
+    word-break: keep-all;
+}
+
+a {
+    margin: 20px 0px 0px 10px;
+    color: black;
+    font-size: 30px;
+}
+
+h2 {
+    margin: 30px 230px 30px 10px;
+    display: inline-block;
+    color: black;
+    font-size: 5vw;
+}
+
+ul {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1px;
+    color: black;
+}
+
+.sauce {
+    color: hotpink;
+}
+
+.src {
+    display: inline-block;
+}
+
+
+
+details summary {
+    display: inline-block;
+    color: black;
+    font-size: 100px; /* 수정된 부분: 원하는 크기로 조절 */
+    text-align: center;
+    margin: 0; /* 추가된 부분: 요소 간 간격을 없앰 */
+    padding: 0; /* 추가된 부분: 요소 내부 간격을 없앰 */
+}
+
+details summary {
+    cursor: pointer;
+}
+
+details summary:hover {
+    color: white;
+    background-color: black;
+}

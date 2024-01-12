@@ -1,0 +1,149 @@
+@font-face {
+    font-family: "MinGothic";
+    src: url("../../font/MinGothic-Regular.woff") format("woff");
+  }
+
+summary::-webkit-details-marker { /* Safari 브라우저용 사용자 정의 스타일 */
+    display: none;
+}
+summary {
+    list-style-type: none; /* 그 외의 브라우저용 사용자 정의 스타일 */
+    color: black;   
+    font-size: 40px;
+}
+
+.clock {
+    display: flex;
+    justify-content: space-between; /* 요소들 사이에 간격을 유지 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+h1 {
+    font-size: 30px;
+    margin-left: 30px;
+}
+
+body {
+    font-family: "MinGothic";
+    background-color: rgb(255, 255, 255);
+    font-size: 13px;
+    line-height: 20px;
+    cursor: pointer;
+}
+
+
+#img_1 {
+    width: 21px;
+}
+
+#img_2 {
+    width: 31px;
+}
+
+#img_3 {
+    width: 43px;
+}
+
+#meettro-img {
+    width: 200px;
+    height: 200px;
+}
+
+#meettro-gif {
+    width: 200px;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+#lockers-img {
+    width: 450px
+}
+
+#freetime-img {
+    width: 350px
+}
+
+#dragpower-gif {
+    width: 250px;
+    margin-right: 50px;
+}
+
+#izit-img {
+    width: 250px;
+    margin-left: 50px;
+}
+
+#rock-gif {
+    width: 250px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#fullofthis-img {
+    width: 200px;
+    margin-right: 50px;
+}
+
+#weindow-img {
+    width: 400px;
+    margin-right: 50px;
+}
+
+.link-container {
+    display: flex;
+    justify-content: space-between; /* 요소들 사이에 간격을 유지 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.link-container div {
+    flex: 1; /* 동일한 너비를 가진 flex item으로 설정*/
+    text-align: center; /* 가운데 정렬을 위한 설정 */
+}
+
+.meettro-text {
+    font-size: 13 px;
+    text-align: center;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.dragpower-text {
+    text-align: center;
+    margin-right: 50px;
+}
+
+.izit-text {
+    text-align: center;
+    margin-left: 50px;
+}
+
+.rock-text {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.fullofthis-text {
+    margin-right: 50px;
+}
+
+.weindow-text {
+    text-align: center;
+    margin-right: 50px;
+}
+
+/* .link-container {
+    margin-top: 50px;
+    display: flex;
+}
+
+.lock_ers {
+    font-size: 50px;
+    font-weight: bold;
+
+}
+
+.free_time {
+    
+    font-size: 50px;
+    font-weight: bold;
+} */

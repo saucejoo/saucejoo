@@ -1,8 +1,9 @@
 const sub_title = document.querySelector('.text-sub');
-sub_title.innerHTML =`  ‘공짜시간’은 7시에 일어나 활동한 12주간의 기록입니다.<br>
+sub_title.innerHTML =`  ‘공짜시간’은 7시 기상을 목표로 한 12주간의 기록입니다.<br>
 원래 없는 것과 같았던 오전 시간을 활용해 아침을 먹고, 움직였습니다.<br>
 사진 두 개 중 위에는 매일 챙겨 먹은 아침식사를, 아래에는 한 일을 기록했습니다.<br>
-사진을 클릭하면 하루 24시간에 추가된 공짜시간을 볼 수 있습니다.`;
+사진을 클릭하면 하루 24시간에 추가된 공짜시간을 볼 수 있습니다.<br>
+옆으로 클릭 드래그 하며 제가 얻은 공짜시간을 구경해보세요.`;
 
 const swiperEl = document.querySelector('swiper-container')
 
@@ -108,7 +109,7 @@ for (let i =1; i<=48; i++) {
 
     element.addEventListener("click", function() {
         // 이벤트 핸들러 동작
-        here.innerHTML = ` ${12-parseFloat(element.getAttribute("data-value"))} 시간`;
+        here.innerHTML = ` ${12-parseFloat(element.getAttribute("data-value"))}시간`;
       });
 
 }
