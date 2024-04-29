@@ -34,7 +34,7 @@ function addZeros(num, digit) { // 자릿수 맞춰주기
 // 출처: https://bbaksae.tistory.com/23 [QRD:티스토리]
 
 
-
+const jeine = document.querySelector('#jeine-img');
 const meettro = document.querySelector('#meettro-gif');
 const lockers = document.querySelector('#lockers-img');
 const freetime = document.querySelector('#freetime-img');
@@ -45,6 +45,10 @@ const fullofthis = document.querySelector('#fullofthis-img');
 const weindow = document.querySelector('#weindow-img');
 // const ros = document.querySelector('#ros');
 
+
+jeine.addEventListener('click',()=>{
+    location.href= 'jeine.html';
+})
 
 meettro.addEventListener('click',()=>{
     location.href='meettro.html';

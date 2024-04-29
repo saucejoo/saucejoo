@@ -1,6 +1,15 @@
-const ros = document.getElementById('ros');
+const graphicTab = document.querySelector('#graphicTab');
+const campaignTab = document.querySelector('#campaignTab');
 
-ros.addEventListener('click',()=>{
-    console.log('ㄹㅇㄹㅇㄹㅇ');
-    alelrt('dferefsf');    
-})
+const graphicContainer = document.querySelector('#graphic-container');
+// const campaignContainer = document.querySelector('#campaign-container');
+
+graphicTab.addEventListener('click',()=>{
+    campaignContainer.style.display = 'none';
+    graphicContainer.style.display = 'block';
+});
+
+campaignTab.addEventListener('click',()=>{
+    campaignContainer.style.display = 'block';
+    graphicContainer.style.display = 'none';
+});

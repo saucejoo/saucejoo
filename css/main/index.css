@@ -44,6 +44,12 @@ body {
     width: 43px;
 }
 
+#jeine-img {
+    width: 300px;
+    height: 200px;
+    margin-left: 20px;
+}
+
 #meettro-img {
     width: 200px;
     height: 200px;
@@ -56,7 +62,9 @@ body {
 }
 
 #lockers-img {
-    width: 450px
+    width: 450px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 #freetime-img {
@@ -65,7 +73,8 @@ body {
 
 #dragpower-gif {
     width: 250px;
-    margin-right: 50px;
+    margin-left: 50px;
+    margin-right: 30px;
 }
 
 #izit-img {
@@ -100,6 +109,11 @@ body {
     text-align: center; /* 가운데 정렬을 위한 설정 */
 }
 
+.jeine-text{
+    text-align: center;
+    margin-right: 50px;
+}
+
 .meettro-text {
     font-size: 13 px;
     text-align: center;
@@ -109,6 +123,7 @@ body {
 
 .dragpower-text {
     text-align: center;
+    margin-left: 50px;
     margin-right: 50px;
 }
 
