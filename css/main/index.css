@@ -43,6 +43,11 @@ body {
 #img_3 {
     width: 43px;
 }
+#finda-img {
+    width: 250px;
+    height: 250px;
+    margin-left: 20px;
+}
 
 #jeine-img {
     width: 300px;
