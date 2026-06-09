@@ -1678,6 +1678,9 @@ window.addEventListener('load', layoutMasonry);
       currentLogoHue = Number(ev.data.hue) || currentLogoHue;
       render();
     }
+    if(t === 'saucejoo_logo_reload') {
+      location.reload();
+    }
   });
 
   let dragging=false, dragY0=0, scroll0=0;

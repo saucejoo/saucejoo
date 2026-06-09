@@ -421,10 +421,27 @@
       view.addEventListener('pointermove', onMove);
       view.addEventListener('pointerdown', onMove);
       view.addEventListener('pointerleave', onLeave);
+
+      // Click on the logo (embed only) → ask the parent page to reload.
+      // Distinguish a deliberate tap from a paint-drag by checking travel.
+      let downPt = null;
+      const onDown = (e) => { downPt = ptAt(e); };
+      const onUp = (e) => {
+        if (!EMBED || !downPt || !window.parent || window.parent === window) { downPt = null; return; }
+        const p = ptAt(e);
+        const moved = Math.hypot(p.x - downPt.x, p.y - downPt.y);
+        downPt = null;
+        if (moved < 8) window.parent.postMessage({ type: 'saucejoo_logo_reload' }, '*');
+      };
+      view.addEventListener('pointerdown', onDown);
+      view.addEventListener('pointerup', onUp);
+
       disposers.push(() => {
         view.removeEventListener('pointermove', onMove);
         view.removeEventListener('pointerdown', onMove);
         view.removeEventListener('pointerleave', onLeave);
+        view.removeEventListener('pointerdown', onDown);
+        view.removeEventListener('pointerup', onUp);
       });
 
       const PUSH_K = 0.25;
