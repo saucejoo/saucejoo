@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 72" fill="none" aria-hidden="true">
+  <g class="butterfly-wing butterfly-wing--left">
+    <path d="M44 30C26 8 4 14 8 32C10 44 24 48 44 36V30Z" fill="#5cd3ff" stroke="#111" stroke-width="2"/>
+    <path d="M44 38C32 46 14 50 16 60C20 66 34 62 44 52V38Z" fill="#fff" stroke="#111" stroke-width="2"/>
+  </g>
+  <g class="butterfly-wing butterfly-wing--right">
+    <path d="M44 30C62 8 84 14 80 32C78 44 64 48 44 36V30Z" fill="#5cd3ff" stroke="#111" stroke-width="2"/>
+    <path d="M44 38C56 46 74 50 72 60C68 66 54 62 44 52V38Z" fill="#fff" stroke="#111" stroke-width="2"/>
+  </g>
+  <ellipse cx="44" cy="36" rx="3.2" ry="13" fill="#111"/>
+  <path d="M42 24C40 16 36 12 34 10M46 24C48 16 52 12 54 10" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="34" cy="10" r="2" fill="#111"/>
+  <circle cx="54" cy="10" r="2" fill="#111"/>
+</svg>

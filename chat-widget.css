@@ -1,0 +1,379 @@
+/* 미니미 챗 — 플로팅 위젯 (index 등에 포함) */
+.chat-root{
+  --chat-w:380px;
+  --chat-h:min(520px,calc(100vh - 120px));
+  --chat-muted:#555;
+  position:fixed;
+  inset:0;
+  z-index:500;
+  pointer-events:none;
+  font-family:var(--sans);
+}
+
+.chat-panel{
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  z-index:2;
+  width:var(--chat-w);
+  height:var(--chat-h);
+  background:var(--bg);
+  border:var(--b);
+  display:flex;
+  flex-direction:column;
+  box-shadow:6px 6px 0 #111;
+  transform:scale(.92) translateY(12px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .22s ease,opacity .22s ease;
+  transform-origin:bottom right;
+}
+.chat-root.is-open .chat-panel{
+  transform:scale(1) translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+
+.chat-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  background:var(--yellow);
+  border-bottom:var(--b);
+  flex-shrink:0;
+}
+.chat-head-avatar{
+  width:36px;height:40px;
+  border:var(--b);
+  background:var(--bg);
+  object-fit:contain;
+  padding:2px 3px;
+  flex-shrink:0;
+}
+.chat-head-text{flex:1;min-width:0}
+.chat-head-text strong{
+  display:block;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.2;
+}
+.chat-head-text span{font-size:11px;color:#333}
+.chat-close{
+  width:32px;height:32px;
+  border:var(--b);
+  background:var(--bg);
+  cursor:pointer;
+  font-size:14px;
+  line-height:1;
+  flex-shrink:0;
+  transition:background .1s;
+}
+.chat-close:hover{background:#fff}
+
+.chat-messages{
+  flex:1;
+  overflow-y:auto;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  scroll-behavior:smooth;
+}
+
+.chat-root .msg{
+  max-width:88%;
+  padding:10px 12px;
+  font-size:13px;
+  line-height:1.55;
+  border:var(--b);
+  word-break:break-word;
+}
+.chat-root .msg-bot{align-self:flex-start;background:#f8f8f8}
+.chat-root .msg-user{align-self:flex-end;background:var(--yellow)}
+.chat-root .msg-pending{
+  align-self:flex-start;
+  background:#fff;
+  border-style:dashed;
+  color:var(--chat-muted);
+  font-size:12px;
+}
+.chat-root .msg-time{
+  display:block;
+  margin-top:6px;
+  font-size:10px;
+  opacity:.55;
+}
+
+.chat-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:0 14px 10px;
+  flex-shrink:0;
+}
+.chat-chip{
+  font-size:11px;
+  font-weight:600;
+  padding:6px 10px;
+  border:var(--b);
+  background:var(--bg);
+  cursor:pointer;
+  transition:background .1s;
+}
+.chat-chip:hover{background:var(--yellow)}
+
+.chat-input-row{
+  display:flex;
+  border-top:var(--b);
+  flex-shrink:0;
+}
+.chat-input{
+  flex:1;
+  border:none;
+  padding:12px 14px;
+  font-family:var(--sans);
+  font-size:14px;
+  outline:none;
+  min-width:0;
+}
+.chat-input::placeholder{color:#999}
+.chat-send{
+  width:52px;
+  border:none;
+  border-left:var(--b);
+  background:var(--ink);
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+  transition:background .1s;
+}
+.chat-send:hover{background:#333}
+
+/* 미니미 셰프 — 화면 위를 걸어다님 */
+.chat-wander{
+  position:fixed;
+  left:0;
+  top:0;
+  width:56px;
+  height:72px;
+  pointer-events:auto;
+  z-index:1;
+  --chef-facing:1;
+}
+.chat-wander.is-anchored{
+  right:24px !important;
+  bottom:24px !important;
+  left:auto !important;
+  top:auto !important;
+  transition:right .35s ease,bottom .35s ease,left .35s ease,top .35s ease;
+}
+.chat-root.is-open .chat-wander.is-anchored{
+  right:24px;
+  bottom:108px;
+}
+
+.chat-launcher{
+  width:56px;
+  height:72px;
+  padding:0;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  display:block;
+  position:relative;
+  transform-origin:center bottom;
+}
+.minimi-chef{
+  display:block;
+  width:56px;
+  height:72px;
+  overflow:visible;
+  filter:drop-shadow(3px 3px 0 #111);
+  pointer-events:none;
+}
+.chef-figure{
+  transform-origin:36px 74px;
+  transform:scaleX(var(--chef-facing,1));
+}
+
+.chat-wander.is-idle .chef-figure{
+  animation:chef-idle 2.4s ease-in-out infinite;
+}
+.chat-wander.is-idle .chef-arm{
+  transform-origin:48px 40px;
+  animation:chef-stir 2.8s ease-in-out infinite;
+}
+.chat-wander.is-walking .chef-figure{
+  animation:chef-walk-bob .36s ease-in-out infinite;
+}
+.chat-wander.is-walking .chef-leg--l{
+  animation:chef-step-l .36s ease-in-out infinite;
+}
+.chat-wander.is-walking .chef-leg--r{
+  animation:chef-step-r .36s ease-in-out infinite;
+}
+.chef-leg--l{transform-origin:30px 58px}
+.chef-leg--r{transform-origin:42px 58px}
+.chat-wander.is-idle .chat-launcher:hover,
+.chat-wander:not(.is-walking) .chat-launcher:hover{
+  transform:translate(-2px,-2px) scale(1.04);
+}
+.chat-wander.is-idle .chat-launcher:hover .minimi-chef,
+.chat-wander:not(.is-walking) .chat-launcher:hover .minimi-chef{
+  filter:drop-shadow(5px 5px 0 #111);
+}
+
+@keyframes chef-idle{
+  0%,100%{transform:scaleX(var(--chef-facing,1)) translateY(0)}
+  50%{transform:scaleX(var(--chef-facing,1)) translateY(-3px)}
+}
+@keyframes chef-stir{
+  0%,100%{transform:rotate(0deg)}
+  40%{transform:rotate(-14deg)}
+  70%{transform:rotate(6deg)}
+}
+@keyframes chef-walk-bob{
+  0%,100%{transform:scaleX(var(--chef-facing,1)) translateY(0)}
+  50%{transform:scaleX(var(--chef-facing,1)) translateY(-4px)}
+}
+@keyframes chef-step-l{
+  0%,100%{transform:rotate(0deg)}
+  50%{transform:rotate(18deg)}
+}
+@keyframes chef-step-r{
+  0%,100%{transform:rotate(0deg)}
+  50%{transform:rotate(-18deg)}
+}
+.chat-badge{
+  position:absolute;
+  top:-6px;right:-6px;
+  min-width:20px;height:20px;
+  padding:0 6px;
+  background:#111;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  border:var(--b);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.chat-badge.is-visible{display:flex}
+.chat-root.is-open .chat-wander.is-anchored .chat-launcher{
+  animation:none;
+  transform:scale(.92);
+  opacity:.9;
+}
+.chat-root.is-open .chat-wander.is-anchored .chef-figure,
+.chat-root.is-open .chat-wander.is-anchored .chef-arm,
+.chat-root.is-open .chat-wander.is-anchored .chef-leg--l,
+.chat-root.is-open .chat-wander.is-anchored .chef-leg--r{animation:none}
+
+@media(prefers-reduced-motion:reduce){
+  .chat-wander.is-idle .chef-figure,
+  .chat-wander.is-idle .chef-arm,
+  .chat-wander.is-walking .chef-figure,
+  .chat-wander.is-walking .chef-leg--l,
+  .chat-wander.is-walking .chef-leg--r{animation:none}
+}
+
+/* 관리자 (chatbot.html 전용) */
+.admin-toggle{
+  position:fixed;
+  bottom:24px;
+  left:24px;
+  z-index:400;
+  font-size:12px;
+  font-weight:600;
+  padding:10px 14px;
+  border:var(--b);
+  background:var(--bg);
+  cursor:pointer;
+  box-shadow:3px 3px 0 #111;
+  font-family:var(--sans);
+}
+.admin-toggle:hover{background:var(--yellow)}
+
+.admin-panel{
+  position:fixed;
+  inset:0;
+  z-index:850;
+  background:rgba(0,0,0,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s;
+}
+.admin-panel.is-open{opacity:1;pointer-events:auto}
+.admin-sheet{
+  width:min(480px,100%);
+  max-height:min(80vh,640px);
+  background:var(--bg);
+  border:var(--b);
+  box-shadow:8px 8px 0 #111;
+  display:flex;
+  flex-direction:column;
+  font-family:var(--sans);
+}
+.admin-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  border-bottom:var(--b);
+  background:#f5f5f5;
+}
+.admin-head h2{font-size:15px;font-weight:700}
+.admin-body{flex:1;overflow-y:auto;padding:16px}
+.admin-empty{
+  font-size:13px;
+  color:var(--chat-muted);
+  line-height:1.6;
+  text-align:center;
+  padding:24px 0;
+}
+.pending-item{border:var(--b);padding:12px;margin-bottom:12px;background:#fff}
+.pending-item p{font-size:13px;line-height:1.55;margin-bottom:10px}
+.pending-meta{font-size:10px;color:#888;margin-bottom:10px}
+.pending-reply{display:flex;gap:8px}
+.pending-reply input{
+  flex:1;
+  border:var(--b);
+  padding:8px 10px;
+  font-family:var(--sans);
+  font-size:13px;
+  outline:none;
+}
+.pending-reply button{
+  padding:8px 14px;
+  border:var(--b);
+  background:var(--yellow);
+  font-family:var(--sans);
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.admin-foot{
+  padding:12px 16px;
+  border-top:var(--b);
+  font-size:11px;
+  color:var(--chat-muted);
+  line-height:1.5;
+}
+
+@media(max-width:480px){
+  .chat-panel{
+    right:12px;
+    bottom:12px;
+    width:calc(100vw - 24px);
+    height:calc(100vh - 100px);
+  }
+  .chat-wander.is-anchored{right:12px !important;bottom:12px !important}
+  .chat-root.is-open .chat-wander.is-anchored{bottom:96px}
+  .admin-toggle{left:12px;bottom:12px}
+}

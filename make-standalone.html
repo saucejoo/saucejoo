@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>직접 만들기 — sauce, joo</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --ink: #1a1a1a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: "Helvetica Neue", "Pretendard", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      touch-action: none;
+    }
+
+    #app canvas { display: block; }
+
+    #app { display: block; width: 100%; height: 100%; }
+    html.embed, html.embed body { width: 100%; height: 100%; }
+    #scene-ui {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding: 28px;
+      gap: 14px;
+      z-index: 20;
+    }
+    .hint { font-size: 14px; color: var(--ink); opacity: 0.55; }
+
+    .btn {
+      pointer-events: auto;
+      background: transparent;
+      border: 1px solid rgba(26, 26, 26, 0.3);
+      color: var(--ink);
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--ink); color: var(--bg); }
+
+    .panel {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .field {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(26, 26, 26, 0.25);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      padding: 9px 16px;
+      border-radius: 999px;
+      outline: none;
+      width: 220px;
+      transition: border-color 0.2s;
+    }
+    .field:focus { border-color: rgba(26, 26, 26, 0.6); }
+    .swatch {
+      position: relative;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(26, 26, 26, 0.25);
+      flex: 0 0 auto;
+    }
+    .swatch input[type="color"] {
+      position: absolute;
+      inset: -25%;
+      width: 150%;
+      height: 150%;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="scene-ui"></div>
+
+  <script type="importmap">
+    { "imports": { "pixi.js": "https://cdn.jsdelivr.net/npm/pixi.js@7/dist/pixi.mjs" } }
+  </script>
+
+  <script type="module">
+    import {
+      Application,
+      Sprite,
+      Texture,
+      RenderTexture,
+      Filter,
+      BlurFilter,
+      BLEND_MODES,
+    } from 'pixi.js';
+
+    // ── engine/shared.js ─────────────────────────────────────────────────────
+
+    function makeTextCanvas(text, fontPx, weight = 900) {
+      const c = document.createElement('canvas');
+      const ctx = c.getContext('2d');
+      const font = `${weight} ${fontPx}px "Helvetica Neue", Arial, sans-serif`;
+      ctx.font = font;
+      const pad = fontPx * 0.12;
+      c.width = Math.ceil(ctx.measureText(text).width + pad * 2);
+      c.height = Math.ceil(fontPx * 1.3);
+      ctx.font = font;
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#fff';
+      ctx.fillText(text, pad, c.height * 0.5);
+      return c;
+    }
+
+    function makeBrushTexture(size = 128) {
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const ctx = c.getContext('2d');
+      const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+      g.addColorStop(0.0, 'rgba(255,255,255,1)');
+      g.addColorStop(0.55, 'rgba(255,255,255,0.7)');
+      g.addColorStop(1.0, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, size, size);
+      return Texture.from(c);
+    }
+
+    // ── scenes/type.js ───────────────────────────────────────────────────────
+
+    const PAINT_FRAG = /* glsl */ `
+    precision highp float;
+    varying vec2 vTextureCoord;
+    uniform sampler2D uSampler;
+    uniform vec4 inputSize;
+    uniform float uThreshold;
+
+    void main() {
+      vec2 px = inputSize.zw;
+      vec4 t = texture2D(uSampler, vTextureCoord);
+      float a = t.a;
+      if (a <= 0.003) { gl_FragColor = vec4(0.0); return; }
+      vec3 rgb = t.rgb / max(a, 0.003);
+
+      float aL = texture2D(uSampler, vTextureCoord - vec2(px.x,0.0)).a;
+      float aR = texture2D(uSampler, vTextureCoord + vec2(px.x,0.0)).a;
+      float aU = texture2D(uSampler, vTextureCoord - vec2(0.0,px.y)).a;
+      float aD = texture2D(uSampler, vTextureCoord + vec2(0.0,px.y)).a;
+      vec3 n = normalize(vec3((aL - aR) * 4.0, (aU - aD) * 4.0, 1.0));
+      vec3 H = normalize(vec3(-0.4, -0.6, 0.7) + vec3(0.0,0.0,1.0));
+      float spec = pow(clamp(dot(n, H), 0.0, 1.0), 24.0);
+
+      float body = smoothstep(uThreshold - 0.05, uThreshold + 0.05, a);
+      vec3 col = rgb + vec3(1.0) * spec * 0.5;
+      gl_FragColor = vec4(col, 1.0) * body;
+    }
+    `;
+
+    function hslHex(h, s, l) {
+      h = ((h % 360) + 360) % 360 / 360;
+      const a = s * Math.min(l, 1 - l);
+      const f = (n) => {
+        const k = (n + h * 12) % 12;
+        return l - a * Math.max(-1, Math.min(k - 3, Math.min(9 - k, 1)));
+      };
+      return ((f(0) * 255) << 16) | ((f(8) * 255) << 8) | (f(4) * 255);
+    }
+
+    function hexToHsl(hex) {
+      const v = parseInt(hex.slice(1), 16);
+      const r = ((v >> 16) & 255) / 255, g = ((v >> 8) & 255) / 255, b = (v & 255) / 255;
+      const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+      const l = (mx + mn) / 2;
+      let h = 0, s = 0;
+      if (mx !== mn) {
+        const d = mx - mn;
+        s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+        if (mx === r) h = (g - b) / d + (g < b ? 6 : 0);
+        else if (mx === g) h = (b - r) / d + 2;
+        else h = (r - g) / d + 4;
+        h *= 60;
+      }
+      return { h, s, l };
+    }
+
+    const params = new URLSearchParams(location.search);
+    const EMBED = params.get('embed') === '1';
+    const SLOT = params.get('slot') || 'wide'; // wide=topnav, mob=88px marquee cell
+    const MOB = EMBED && SLOT === 'mob';
+    const LOGO_TEXT = (params.get('text') || 'saucejoo').trim() || 'saucejoo';
+    if (EMBED) {
+      document.documentElement.classList.add('embed');
+      document.documentElement.style.setProperty('--bg', MOB ? 'transparent' : '#000');
+      document.body.style.background = MOB ? 'transparent' : '#000';
+      const ui = document.getElementById('scene-ui');
+      if (ui) ui.style.display = 'none';
+    }
+
+    function typeScene(app) {
+      const disposers = [];
+      const sceneUI = document.getElementById('scene-ui');
+      // Smaller text for embed slots.
+      const FONT = EMBED ? (SLOT === 'mob' ? 22 : 36) : 150;
+
+      const measCtx = document.createElement('canvas').getContext('2d');
+      measCtx.font = `900 ${FONT}px "Helvetica Neue", Arial, sans-serif`;
+
+      let letters = [];
+      let total = 0;
+      let letterH = FONT * 1.3;
+
+      function buildLetters(text) {
+        for (const L of letters) { L.s.destroy(); L.tex.destroy(true); }
+        letters = [];
+        const chars = [...text].slice(0, 16);
+        total = 0;
+        for (const ch of chars) total += measCtx.measureText(ch === ' ' ? ' ' : ch).width;
+        total = Math.max(total, 1);
+        let run = 0, idx = 0;
+        chars.forEach((ch) => {
+          const w = measCtx.measureText(ch === ' ' ? ' ' : ch).width;
+          const off = run + w / 2 - total / 2;
+          run += w;
+          if (ch === ' ') return;
+          const tex = Texture.from(makeTextCanvas(ch, FONT));
+          const s = new Sprite(tex);
+          s.anchor.set(0.5);
+          letters.push({ s, tex, off, i: idx++, px: 0, py: 0, vx: 0, vy: 0, hovered: false, popT: 0, popCd: 0 });
+        });
+        if (letters[0]) letterH = letters[0].tex.height;
+        safeLayout();
+      }
+
+      const brush = new Sprite(makeBrushTexture());
+      brush.anchor.set(0.5);
+
+      const fader = new Sprite(Texture.WHITE);
+      fader.blendMode = BLEND_MODES.ERASE;
+      fader.alpha = 0.05;
+
+      let accumRT = null;
+      const paint = new Sprite(Texture.WHITE);
+      app.stage.addChild(paint);
+
+      const blur = new BlurFilter(5);
+      blur.quality = 5;
+      const gloss = new Filter(undefined, PAINT_FRAG, { uThreshold: 0.42 });
+      paint.filters = [blur, gloss];
+
+      const SAUCE_HUES = [5, 18, 28, 38]; // Ketchup · Sriracha · BBQ · Mustard
+      let sauceIdx = 0;
+
+      let W = 0, H = 0, time = 0, hue = SAUCE_HUES[0];
+      let scale = 1, waveAmp = 0, halfW = 0, halfH = 0;
+      let cx, cy, vx, vy;
+      const SPEED = 0.3;
+
+      let fixed = false;
+      let baseHue = hue, baseSat = 0.82, baseLight = 0.55;
+
+      function layout() {
+        W = app.renderer.width / app.renderer.resolution;
+        H = app.renderer.height / app.renderer.resolution;
+        if (EMBED && SLOT === 'mob') {
+          scale = Math.min((W * 0.95) / total, (H * 0.70) / letterH);
+          scale = Math.min(scale, 1.15);
+          waveAmp = letterH * scale * 0.08;
+          halfW = (total * scale) / 2 + letterH * scale * 0.12;
+          halfH = (letterH * scale) / 2 + waveAmp;
+        } else if (EMBED) {
+          // topnav logo slot
+          scale = Math.min((W * 0.90) / total, (H * 0.72) / letterH);
+          scale = Math.min(scale, EMBED ? 1.8 : 2.4);
+          waveAmp = letterH * scale * 0.12;
+          halfW = (total * scale) / 2 + letterH * scale * 0.14;
+          halfH = (letterH * scale) / 2 + waveAmp;
+        } else {
+          scale = Math.min((W * 0.78) / total, (H * 0.4) / letterH);
+          scale = Math.min(scale, 2.4);
+          waveAmp = letterH * scale * 0.34;
+          halfW = (total * scale) / 2 + letterH * scale * 0.3;
+          halfH = (letterH * scale) / 2 + waveAmp;
+        }
+
+        const old = accumRT;
+        accumRT = RenderTexture.create({ width: W, height: H, resolution: app.renderer.resolution });
+        if (old) old.destroy(true);
+        paint.texture = accumRT;
+        paint.position.set(0, 0);
+        fader.width = W;
+        fader.height = H;
+
+        if (cx === undefined) {
+          cx = W / 2; cy = H / 2;
+          const a = Math.random() * Math.PI * 2;
+          vx = Math.cos(a) * SPEED; vy = Math.sin(a) * SPEED;
+        } else {
+          cx = Math.max(halfW, Math.min(W - halfW, cx));
+          cy = Math.max(halfH, Math.min(H - halfH, cy));
+        }
+      }
+
+      function safeLayout() {
+        if (app.renderer.width < 2 || app.renderer.height < 2) return;
+        layout();
+      }
+
+      function syncRendererSize() {
+        const w = appEl.clientWidth;
+        const h = appEl.clientHeight;
+        if (w < 2 || h < 2) return false;
+        app.renderer.resize(w, h);
+        layout();
+        return true;
+      }
+
+      if (EMBED) {
+        app.renderer.on('resize', safeLayout);
+        if ('ResizeObserver' in window) {
+          const ro = new ResizeObserver(() => { syncRendererSize(); });
+          ro.observe(appEl);
+          if (window.frameElement) ro.observe(window.frameElement);
+          disposers.push(() => ro.disconnect());
+        }
+        const kick = () => { if (!syncRendererSize()) requestAnimationFrame(kick); };
+        requestAnimationFrame(kick);
+        window.addEventListener('message', (ev) => {
+          if (ev.data?.type === 'saucejoo_logo_relayout') syncRendererSize();
+        });
+      }
+
+      const renderInto = (node) => app.renderer.render(node, { renderTexture: accumRT, clear: false });
+
+      function bounce() {
+        if (!fixed) {
+          sauceIdx = (sauceIdx + 1) % SAUCE_HUES.length;
+          hue = SAUCE_HUES[sauceIdx];
+          if (EMBED && window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: 'saucejoo_logo_hue', hue }, '*');
+          }
+        }
+        const a = Math.atan2(vy, vx) + (Math.random() - 0.5) * 0.5;
+        vx = Math.cos(a) * SPEED; vy = Math.sin(a) * SPEED;
+      }
+
+      function curHue() { return fixed ? baseHue : hue; }
+
+      function bgSplat() {
+        const M = EMBED ? 24 : 0; // keep splats inside the slot
+        const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+        const main = 26 + Math.random() * 26;
+        const x = clamp(Math.random() * W, M + main, W - M - main);
+        const y = clamp(Math.random() * H, M + main, H - M - main);
+        const col = hslHex(curHue() + (Math.random() - 0.5) * 18, baseSat, 0.56);
+        brush.tint = col;
+        brush.width = brush.height = main;
+        brush.position.set(x, y);
+        renderInto(brush);
+        const n = 3 + (Math.random() * 4) | 0;
+        for (let k = 0; k < n; k++) {
+          const a = Math.random() * Math.PI * 2;
+          const rad = main * (0.5 + Math.random());
+          brush.width = brush.height = main * (0.2 + Math.random() * 0.35);
+          const px = clamp(x + Math.cos(a) * rad, M + main, W - M - main);
+          const py = clamp(y + Math.sin(a) * rad, M + main, H - M - main);
+          brush.position.set(px, py);
+          renderInto(brush);
+        }
+      }
+
+      const view = app.view;
+      let pointer = null;
+      let lastPointer = null;
+      let lastPointerT = 0;
+      let pVx = 0, pVy = 0, pSpeed = 0;
+      const ptAt = (e) => {
+        const r = view.getBoundingClientRect();
+        return { x: e.clientX - r.left, y: e.clientY - r.top };
+      };
+      const onMove = (e) => {
+        const now = performance.now();
+        const p = ptAt(e);
+        pointer = p;
+        if (lastPointer) {
+          const dtMs = Math.max(8, now - lastPointerT);
+          const dx = p.x - lastPointer.x;
+          const dy = p.y - lastPointer.y;
+          const vxNow = dx / dtMs;
+          const vyNow = dy / dtMs;
+          const spNow = Math.hypot(vxNow, vyNow);
+          // smooth pointer velocity
+          pVx = pVx * 0.75 + vxNow * 0.25;
+          pVy = pVy * 0.75 + vyNow * 0.25;
+          pSpeed = pSpeed * 0.75 + spNow * 0.25;
+        }
+        lastPointer = p;
+        lastPointerT = now;
+      };
+      const onLeave = () => { pointer = null; };
+      view.addEventListener('pointermove', onMove);
+      view.addEventListener('pointerdown', onMove);
+      view.addEventListener('pointerleave', onLeave);
+      disposers.push(() => {
+        view.removeEventListener('pointermove', onMove);
+        view.removeEventListener('pointerdown', onMove);
+        view.removeEventListener('pointerleave', onLeave);
+      });
+
+      const PUSH_K = 0.25;
+      const PUSH_DAMP = 0.6;
+      const PUSH_FORCE = 100;
+      const POP_R = 130;           // px radius for "pop" trigger
+      const POP_BASE = 180;        // base upward kick on hover
+      const POP_SENS = 1600;       // amplify kick by pointer speed
+      const POP_MAX = 420;         // clamp extra kick
+      const POP_SCALE = 0.18;      // subtle scale during pop
+      const POP_DECAY = 0.86;      // 0..1, smaller = faster decay
+      const POP_COOLDOWN_MS = 120; // allow repeated pops while hovering
+      const SWIRL_K = 520;         // pointer-speed swirl force
+      const SWIRL_JITTER = 0.55;   // random mix amount when fast
+      const BG_SPLAT_RATE = 0.035; // seconds per splat at high speed (embed only)
+      let bgSplatAcc = 0;
+
+      function tick() {
+        const dt = Math.min(app.ticker.deltaMS / 16.67, 2);
+        const dtMs = Math.min(app.ticker.deltaMS, 50);
+        if (W < 2 || H < 2) return;
+        time += dt;
+
+        // Emit "background splat" events to the parent page when the user moves
+        // quickly over the logo (embed only). Parent draws full-screen splats.
+        if (EMBED && pointer && window.parent && window.parent !== window) {
+          // pSpeed is px/ms; scale to a rough 0..1 intensity
+          const intensity = Math.min(Math.max(pSpeed * 26, 0), 1);
+          if (intensity > 0.12) {
+            // higher intensity -> higher emission rate
+            const rate = BG_SPLAT_RATE / (0.35 + intensity * 1.4);
+            bgSplatAcc += (app.ticker.deltaMS / 1000) / rate;
+            const burst = Math.min(6, Math.floor(bgSplatAcc));
+            if (burst > 0) bgSplatAcc -= burst;
+            for (let i = 0; i < burst; i++) {
+              window.parent.postMessage({
+                type: 'saucejoo_logo_splat',
+                // pointer position in iframe space (0..1)
+                u: pointer.x / Math.max(1, W),
+                v: pointer.y / Math.max(1, H),
+                intensity,
+                hue: curHue(),
+              }, '*');
+            }
+          } else {
+            bgSplatAcc = 0;
+          }
+        }
+
+        cx += vx * dt; cy += vy * dt;
+        if (cx < halfW) { cx = halfW; vx = Math.abs(vx); bounce(); }
+        else if (cx > W - halfW) { cx = W - halfW; vx = -Math.abs(vx); bounce(); }
+        if (cy < halfH) { cy = halfH; vy = Math.abs(vy); bounce(); }
+        else if (cy > H - halfH) { cy = H - halfH; vy = -Math.abs(vy); bounce(); }
+        // sauce mode: no continuous hue drift — color changes only on bounce
+
+        app.renderer.render(fader, { renderTexture: accumRT, clear: false });
+
+        if (Math.random() < 0.06 * dt) bgSplat();
+
+        const pushR = Math.max(70, letterH * scale * 0.55);
+        const PAD = EMBED ? 0 : 0;
+
+        for (const L of letters) {
+          L.popCd = Math.max(0, (L.popCd || 0) - dtMs);
+          const phase = time * 0.12 + L.i * 0.7;
+          const homeX = cx + L.off * scale;
+          const homeY = cy + Math.sin(phase) * waveAmp;
+
+          L.vx += -PUSH_K * L.px;
+          L.vy += -PUSH_K * L.py;
+
+          if (pointer) {
+            const lx = homeX + L.px, ly = homeY + L.py;
+            const ddx = lx - pointer.x, ddy = ly - pointer.y;
+            const d = Math.hypot(ddx, ddy) || 0.001;
+            if (d < pushR) {
+              const f = (1 - d / pushR) * PUSH_FORCE;
+              L.vx += (ddx / d) * f * dt;
+              L.vy += (ddy / d) * f * dt;
+
+              // when moving fast, mix/swirl the letters more (chaotic feel)
+              const s = Math.min(pSpeed * SWIRL_K, 380);
+              if (s > 10) {
+                L.vx += (pVx * s) * dt;
+                L.vy += (pVy * s) * dt;
+                const j = (s * SWIRL_JITTER) * dt;
+                L.vx += (Math.random() - 0.5) * j;
+                L.vy += (Math.random() - 0.5) * j;
+              }
+            }
+
+            // pop: whenever pointer is near (with short cooldown)
+            const isNear = d < POP_R;
+            if (isNear && L.popCd <= 0) {
+              const extra = Math.min(pSpeed * POP_SENS, POP_MAX);
+              L.vy -= (POP_BASE + extra);
+              L.popT = 1;
+              L.hovered = true;
+              L.popCd = POP_COOLDOWN_MS;
+            } else if (!isNear && L.hovered) {
+              L.hovered = false;
+            }
+          } else if (L.hovered) {
+            L.hovered = false;
+          }
+
+          L.vx *= PUSH_DAMP; L.vy *= PUSH_DAMP;
+          L.px += L.vx * dt; L.py += L.vy * dt;
+
+          L.popT *= POP_DECAY;
+          const disp = Math.hypot(L.px, L.py);
+          L.s.scale.set(scale * (1 + POP_SCALE * L.popT));
+          let x = homeX + L.px;
+          let y = homeY + L.py;
+          if (EMBED) {
+            // include rotation margin so corners never clip
+            const hw = (L.tex.width * scale) / 2;
+            const hh = (L.tex.height * scale) / 2;
+            // loosen bounds slightly to allow a bit more travel
+            const r = Math.max(0, Math.hypot(hw, hh) - 2);
+            x = Math.max(PAD + r, Math.min(W - PAD - r, x));
+            y = Math.max(PAD + r, Math.min(H - PAD - r, y));
+          }
+          L.s.position.set(x, y);
+          L.s.rotation =
+            Math.sin(phase + 1.5) * 0.16 +
+            (L.px / (pushR + 1)) * 0.4 +
+            L.popT * 0.10;
+          const tint = fixed
+            ? hslHex(baseHue + L.i * 6 + disp * 0.4, baseSat, baseLight)
+            : hslHex(hue + L.i * 2, baseSat, baseLight);
+          L.s.tint = tint;
+          renderInto(L.s);
+        }
+      }
+      app.ticker.add(tick);
+      disposers.push(() => app.ticker.remove(tick));
+
+      if (!EMBED && sceneUI) sceneUI.innerHTML = `
+        <div class="panel">
+          <input class="field" id="txt" type="text" maxlength="16" value="saucejoo"
+                 autocomplete="off" spellcheck="false" placeholder="텍스트 입력" />
+          <label class="swatch" title="색상">
+            <input id="col" type="color" value="#ff5aa0" />
+          </label>
+          <button class="btn" id="rainbow">무지개</button>
+        </div>
+        <p class="hint">글자에 마우스를 올리면 물감이 밀려나요. 텍스트·색을 바꿔보세요.</p>
+      `;
+      const txt = sceneUI?.querySelector?.('#txt');
+      const col = sceneUI?.querySelector?.('#col');
+      const rainbowBtn = sceneUI?.querySelector?.('#rainbow');
+
+      txt?.addEventListener('input', () => {
+        const v = txt.value.trim() || 'saucejoo';
+        buildLetters(v);
+      });
+      col?.addEventListener('input', () => {
+        const { h, s, l } = hexToHsl(col.value);
+        baseHue = h; baseSat = Math.max(0.45, s); baseLight = Math.min(0.62, Math.max(0.45, l));
+        fixed = true;
+      });
+      rainbowBtn?.addEventListener('click', () => { fixed = false; });
+
+      buildLetters(LOGO_TEXT);
+    }
+
+    // ── 초기화 ───────────────────────────────────────────────────────────────
+
+    const appEl = document.getElementById('app');
+    const app = new Application({
+      resizeTo: EMBED ? appEl : window,
+      backgroundColor: EMBED ? 0x000000 : 0xf4f1ea,
+      backgroundAlpha: MOB ? 0 : 1,
+      antialias: true,
+      resolution: Math.min(window.devicePixelRatio || 1, 2),
+      autoDensity: true,
+    });
+    document.getElementById('app').appendChild(app.view);
+    typeScene(app);
+  </script>
+</body>
+</html>

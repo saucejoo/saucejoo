@@ -1,0 +1,13 @@
+@font-face {
+    font-family: "MinGothic";
+    src: url("../../font/MinGothic-Regular.woff") format("woff");
+  }
+
+summary::-webkit-details-marker { /* Safari 브라우저용 사용자 정의 스타일 */
+    display: none;
+}
+summary {
+    list-style-type: none; /* 그 외의 브라우저용 사용자 정의 스타일 */
+    color: black;   
+    font-size: 40px;
+}

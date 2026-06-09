@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>온통 이 생각 — ALL OF THIS</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" crossorigin>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#111;
+  --bg:#fff;
+  --sans:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --pad-x:clamp(20px,12.5vw,240px);
+  --content:min(1440px,calc(100vw - 2 * var(--pad-x)));
+  --label:clamp(18px,1.56vw,30px);
+  --body:clamp(16px,1.56vw,30px);
+  --brand:clamp(48px,6.4vw,122px);
+  --en:clamp(32px,3.54vw,68px);
+}
+
+html{scroll-behavior:smooth}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:400;
+  line-height:1.45;
+}
+
+.aot-back{
+  position:fixed;
+  top:16px;
+  left:var(--pad-x);
+  z-index:100;
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink);
+  text-decoration:none;
+  padding:8px 12px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(0,0,0,.12);
+  border-radius:4px;
+}
+.aot-back:hover{background:#f5f5f5}
+
+.aot-hero{
+  width:100%;
+  aspect-ratio:1920/1281;
+  overflow:hidden;
+  background:#1a1a1a;
+}
+.aot-hero img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.aot-main{
+  padding:0 var(--pad-x) 120px;
+}
+
+.aot-section{
+  max-width:var(--content);
+  margin:0 auto;
+  padding-top:clamp(64px,8vw,120px);
+}
+
+.aot-label{
+  font-size:var(--label);
+  font-weight:400;
+  letter-spacing:.02em;
+  text-transform:uppercase;
+  margin-bottom:clamp(24px,2.5vw,48px);
+}
+
+.aot-body{
+  font-size:var(--body);
+  line-height:1.5;
+  max-width:1264px;
+}
+.aot-body p + p{margin-top:15px}
+
+/* Brand */
+.aot-brand-block + .aot-brand-block{margin-top:clamp(40px,4vw,72px)}
+.aot-brand-label{
+  font-size:var(--label);
+  text-transform:uppercase;
+  margin-bottom:clamp(16px,2vw,32px);
+}
+.aot-brand-name{
+  font-size:var(--brand);
+  font-weight:700;
+  line-height:1.1;
+  letter-spacing:-.02em;
+}
+.aot-brand-en{
+  font-size:var(--en);
+  font-weight:700;
+  line-height:1.15;
+  letter-spacing:-.01em;
+}
+
+/* Scenario */
+.aot-scenario-figure{margin-top:clamp(32px,3vw,56px)}
+.aot-scenario-figure img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+.aot-scenario-captions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:clamp(12px,2vw,24px);
+  margin-top:clamp(20px,2vw,32px);
+  font-size:clamp(13px,0.89vw,17px);
+  line-height:1.45;
+}
+.aot-scenario-captions p{margin:0}
+
+/* Grids */
+.aot-grid-3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(10px,1.2vw,16px);
+  margin-top:clamp(32px,3vw,56px);
+}
+.aot-grid-3 img{
+  width:100%;
+  height:auto;
+  display:block;
+  background:#111;
+}
+
+.aot-grid-3x3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:clamp(10px,1.2vw,16px);
+  margin-top:clamp(32px,3vw,56px);
+}
+.aot-grid-3x3 img{
+  width:100%;
+  height:auto;
+  display:block;
+  background:#111;
+}
+
+.aot-grid-5{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:clamp(10px,1.2vw,16px);
+  margin-top:clamp(10px,1.2vw,16px);
+}
+.aot-grid-5 img{
+  width:100%;
+  height:auto;
+  display:block;
+  background:#111;
+}
+
+.aot-stack-list{
+  margin-top:clamp(32px,3vw,56px);
+  font-size:var(--body);
+  line-height:1.5;
+}
+.aot-stack-list p + p{margin-top:15px}
+.aot-stack-list p{white-space:pre-wrap}
+
+/* Demo video — full bleed, iframe cover (no side letterboxing) */
+#demo-video.aot-section--bleed{
+  max-width:none;
+  width:100vw;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
+}
+#demo-video .aot-label{
+  max-width:var(--content);
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:var(--pad-x);
+  padding-right:var(--pad-x);
+}
+.aot-video-wrap{
+  margin-top:clamp(32px,3vw,56px);
+  width:100%;
+  overflow:hidden;
+  background:var(--bg);
+}
+.aot-video-embed{
+  position:relative;
+  width:100%;
+  /* Vimeo source is 384×240 (8:5) — 16:9 box caused side pillarboxing */
+  aspect-ratio:8/5;
+  overflow:hidden;
+  background:var(--bg);
+}
+.aot-video-embed iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+.aot-footer{
+  max-width:var(--content);
+  margin:clamp(80px,10vw,140px) auto 0;
+  padding:32px 0 0;
+  border-top:1px solid #ddd;
+  font-size:14px;
+  color:#666;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:16px;
+}
+.aot-footer strong{color:var(--ink);font-weight:600}
+
+@media(max-width:900px){
+  .aot-scenario-captions{grid-template-columns:repeat(2,1fr)}
+  .aot-grid-3,.aot-grid-3x3{grid-template-columns:1fr}
+  .aot-grid-5{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:520px){
+  .aot-scenario-captions{grid-template-columns:1fr}
+  .aot-grid-5{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<a class="aot-back" href="index.html">← portfolio</a>
+
+<header class="aot-hero">
+  <img src="assets/aot/hero.jpg" alt="온통 이 생각 — 노트북이 놓인 소파 위 인터랙티브 포털 히어로">
+</header>
+
+<main class="aot-main">
+
+  <section class="aot-section" id="overview" aria-labelledby="overview-label">
+    <h2 class="aot-label" id="overview-label">Overview</h2>
+    <div class="aot-body">
+      <p>'온통 이 생각'은 바쁜 현대인의 삶 속 고요한 여유와 해방감을 느끼게 해줄 몰입형 인터랙티브 웹사이트입니다.</p>
+      <p>멀티태스킹(Multi-tasking)을 추구하는 사회 속에서 '모노태스킹(Mono-tasking)'의 인터랙션 콘텐츠를 통해 생각을 정리하고 단순화하는 경험을 제공하고 잠깐의 여유를 찾게 하고자 합니다.</p>
+    </div>
+  </section>
+
+  <section class="aot-section" id="brand" aria-labelledby="brand-label">
+    <h2 class="aot-label visually-hidden" id="brand-label">Brand</h2>
+    <div class="aot-brand-block">
+      <p class="aot-brand-label">Brand name</p>
+      <p class="aot-brand-name">온통 이 생각</p>
+    </div>
+    <div class="aot-brand-block">
+      <p class="aot-brand-label">Tagline</p>
+      <p class="aot-brand-en">Interactive Portal</p>
+    </div>
+    <div class="aot-brand-block">
+      <p class="aot-brand-label">Slogan</p>
+      <p class="aot-brand-en">I'm Full of This</p>
+    </div>
+  </section>
+
+  <section class="aot-section" id="scenario" aria-labelledby="scenario-label">
+    <h2 class="aot-label" id="scenario-label">User scenario</h2>
+    <figure class="aot-scenario-figure">
+      <img src="assets/aot/scenario-board.png" alt="사용자 시나리오 스토리보드 8단계">
+    </figure>
+    <div class="aot-scenario-captions">
+      <p><strong>#1</strong> 화면에 빈칸이 떠있고 뒤에 별들이 움직이고 있다.</p>
+      <p><strong>#2</strong> 사용자는 빈칸에 단어를 입력하는데, 키보드를 누를 때마다 소리가 생성된다.</p>
+      <p><strong>#3</strong> 해당 단어의 대표 이미지 모양으로 은하가 생성되고 이것은 별들이 파티클로 모여 만들어진다.</p>
+      <p><strong>#4</strong> 은하 안에 들어가면 카메라로 화면 전환이 되면서 사용자 얼굴에 크롤링 된 이미지가 뜬다.</p>
+      <p><strong>#5</strong> 사용자가 이동하는 방식에 따라 이미지들이 움직인다.</p>
+      <p><strong>#6</strong> 사용자가 이동하는 방식에 따라 이미지들이 움직인다.</p>
+      <p><strong>#7</strong> 머리를 흔들면 머릿속 정보들이 빠져나가는 듯 이미지들이 흩어지고 메인 화면으로 나갈 수 있다.</p>
+      <p><strong>#8</strong> 메인 화면에는 검색한 키워드가 은하가 되어 떠다니게 된다.</p>
+    </div>
+  </section>
+
+  <section class="aot-section" id="technical" aria-labelledby="technical-label">
+    <h2 class="aot-label" id="technical-label">Technical solution</h2>
+    <div class="aot-body">
+      <p>p5.js의 ML5 라이브러리를 사용해 얼굴인식을 구현하고</p>
+      <p>로컬 서버를 따로 구현하고 그 위에 기본적인 웹 프론트(html5, css, js)를 구성했습니다.</p>
+      <p>로컬 스토리지를 사용하여 기본적인 화면 전개를 구현했습니다.</p>
+    </div>
+    <div class="aot-grid-3" role="list">
+      <img src="assets/aot/tech-1.png" alt="기술 구현 스크린샷 — 우주비행사 라인 아트" role="listitem">
+      <img src="assets/aot/tech-2.png" alt="기술 구현 스크린샷 — 파티클 버거 3D" role="listitem">
+      <img src="assets/aot/tech-3.png" alt="기술 구현 스크린샷 — 얼굴 인식 웹캠 오버레이" role="listitem">
+    </div>
+    <div class="aot-stack-list">
+      <p>프론트            -- html5, p5js</p>
+      <p>영상처리 서버 -- python 기반 Flask Framework, OpenCv 라이브러리</p>
+      <p>그래픽 디자인 -- Cinema4D, Adobe After Effects</p>
+    </div>
+  </section>
+
+  <section class="aot-section" id="still-cut" aria-labelledby="still-label">
+    <h2 class="aot-label" id="still-label">Still cut</h2>
+    <div class="aot-body">
+      <p>단어를 입력하고, 그 단어가 3D로 보이고, 내 얼굴에 실시간으로 나타나는</p>
+      <p>이미지들을 떨쳐내기까지, 사용자가 포털에 들어가고부터 나올 때까지의 모든 경험 과정에서</p>
+      <p>'모노태스킹'이라는 키워드를 전달하고 사용자가 단계적으로 몰입할 수 있는</p>
+      <p>웹 환경을 만드는 것에 가장 초점을 두고 진행했습니다.</p>
+    </div>
+    <div class="aot-grid-3x3" aria-label="스틸컷 갤러리">
+      <img src="assets/aot/still-01.png" alt="스틸컷 1">
+      <img src="assets/aot/still-02.png" alt="스틸컷 2">
+      <img src="assets/aot/still-03.png" alt="스틸컷 3">
+      <img src="assets/aot/still-04.png" alt="스틸컷 4">
+      <img src="assets/aot/still-05.png" alt="스틸컷 5">
+      <img src="assets/aot/still-06.png" alt="스틸컷 6">
+      <img src="assets/aot/still-07.png" alt="스틸컷 7">
+      <img src="assets/aot/still-08.png" alt="스틸컷 8">
+      <img src="assets/aot/still-09.png" alt="스틸컷 9">
+    </div>
+    <div class="aot-grid-5" aria-label="스틸컷 썸네일">
+      <img src="assets/aot/still-10.png" alt="스틸컷 10">
+      <img src="assets/aot/still-11.png" alt="스틸컷 11">
+      <img src="assets/aot/still-12.png" alt="스틸컷 12">
+      <img src="assets/aot/still-13.png" alt="스틸컷 13">
+      <img src="assets/aot/still-14.png" alt="스틸컷 14">
+    </div>
+  </section>
+
+  <section class="aot-section aot-section--bleed" id="demo-video" aria-labelledby="demo-label">
+    <h2 class="aot-label" id="demo-label">Demo video</h2>
+    <div class="aot-video-wrap">
+      <div class="aot-video-embed">
+        <iframe
+          src="https://player.vimeo.com/video/901035016?title=0&byline=0&portrait=0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+          allowfullscreen
+          title="WEB-2022-온통 이 생각 — 데모 영상"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="aot-footer aot-section">
+  <div>
+    <strong>ALL OF THIS</strong> · 온통 이 생각
+  </div>
+  <div>Interactive Portal · 2022 · saucejoo</div>
+</footer>
+
+</body>
+</html>
