@@ -1653,7 +1653,7 @@ window.addEventListener('load', layoutMasonry);
   const BOTTOM_EPS=2;
   const MIN_STEP_RATIO=0.32;
   const MAX_PULL=120;
-  const RELEASE_THRESHOLD=8;
+  const RELEASE_THRESHOLD=80;
   const WHEEL_GAIN=0.55;
   const TOUCH_GAIN=0.7;
   const PHASE_GAIN=0.07;
@@ -1694,6 +1694,7 @@ window.addEventListener('load', layoutMasonry);
   let wheelReleaseTimer=null;
   // touch tracking
   let touchY0=0, touchAtBottom=false;
+  let wasAtBottom=false;
   // scroll velocity → wave phase
   let phaseOffset=0;
   let scrollVel=0;
@@ -1945,13 +1946,14 @@ window.addEventListener('load', layoutMasonry);
     render();
     if(!springing&&overscrollPull<0.5) startFrame();
     if(!springing&&overscrollPull<0.5) scheduleHide();
+    wasAtBottom=atBottom(m);
   },{passive:true});
 
   /* 휠 — 바닥에서 아래로 더 당김 */
   scroller.addEventListener('wheel',(e)=>{
     if(springing){cancelSpringAnim();overscrollPull=0;}
     const m=metrics();
-    if(e.deltaY>0&&atBottom(m)){
+    if(e.deltaY>0&&wasAtBottom&&atBottom(m)){
       overscrollPull=Math.min(MAX_PULL,overscrollPull+e.deltaY*WHEEL_GAIN);
       showBar();
       clearTimeout(hideTimer);
